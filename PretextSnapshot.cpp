@@ -3876,7 +3876,9 @@ MainArgs
        //STB_Memory_Arena = PushSubArena(Working_Set, 12 * outputResolution * outputResolution);
        CreateMemoryArena(STB_Memory_Arena, 12 * outputResolution * outputResolution);
        STB_Compressor = libdeflate_alloc_compressor(12);
-       textureBufferQueueArena = PushSubArena(Working_Set, textureBufferQueueTotalMemory);
+       // The texture-buffer-queue sub-arena is allocated later, once Bytes_Per_Texture
+       // is known from the map header, so it can be sized to the map's texture resolution.
+       textureBufferQueueArena = 0;
 
        Avir_Thread_Pool = new avir_thread_pool();
 
@@ -4004,7 +4006,15 @@ MainArgs
 
                     FreeLastPush(Working_Set); // contigs
                     FreeLastPush(Working_Set); // header
-                    
+
+                    // Size the (non-chainable) texture-buffer-queue sub-arena from the actual
+                    // per-texture byte count read from the map header. A fixed size cannot scale
+                    // to high-resolution maps: each buffer needs a texture plus a compression
+                    // buffer (~2 * Bytes_Per_Texture), and 2048px textures alone need ~22MB.
+                    textureBufferQueueTotalMemory = ((Number_Of_Texture_Buffer_Queues * Number_Of_Texture_Buffers_Per_Queue) *
+                        ((2 * Bytes_Per_Texture) + Compression_Header_Size + (u32)sizeof(texture_buffer))) + MegaByte(1);
+                    textureBufferQueueArena = PushSubArena(Working_Set, textureBufferQueueTotalMemory);
+
                     Map_Properties = PushStruct(Working_Set, map_properties);
                     Map_Properties->contigs = PushArray(Working_Set, contig, numberOfContigs);
                     u08 *source = (u08 *)(contigs + numberOfContigs);
