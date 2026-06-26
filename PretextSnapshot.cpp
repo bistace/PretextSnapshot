@@ -2704,32 +2704,36 @@ FillInGrid_Thread(void *in)
                                 AlphaBlendGrid_8Wide(pixelData);
                                 u32 skipBackIndex = 0;
                                 u32 backFillCount = 0;
-                                while (backFillCount < dataSize)
+                                while (backFillCount < dataSize && skipBackIndex < range_x)
                                 {
-                                    if (!CheckPixelBitFlag(index - (++skipBackIndex), pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                                    ++skipBackIndex;
+                                    u32 colIdx = index - skipBackIndex;
+                                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                                     {
-                                        u32 idx = lineariseImageIndex(index - skipBackIndex, pixel);
+                                        u32 idx = lineariseImageIndex(colIdx, pixel);
                                         u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 0] = (u08)((pixelData[0] >> backShiftIndex) & (u64)0xff);
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 1] = (u08)((pixelData[1] >> backShiftIndex) & (u64)0xff);
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 2] = (u08)((pixelData[2] >> backShiftIndex) & (u64)0xff);
-                                        FillPixelBitFlag(index - skipBackIndex, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
+                                        FillPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
                                     }
                                 }
 #else
                                 AlphaBlendGrid_4Wide(pixelData);
                                 u32 skipBackIndex = 0;
                                 u32 backFillCount = 0;
-                                while (backFillCount < dataSize)
+                                while (backFillCount < dataSize && skipBackIndex < range_x)
                                 {
-                                    if (!CheckPixelBitFlag(index - (++skipBackIndex), pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                                    ++skipBackIndex;
+                                    u32 colIdx = index - skipBackIndex;
+                                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                                     {
-                                        u32 idx = lineariseImageIndex(index - skipBackIndex, pixel);
+                                        u32 idx = lineariseImageIndex(colIdx, pixel);
                                         u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 0] = (u08)((pixelData[0] >> backShiftIndex) & (u32)0xff);
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 1] = (u08)((pixelData[1] >> backShiftIndex) & (u32)0xff);
                                         GetCurrentOutputBuffer(Output_Buffer)[idx + 2] = (u08)((pixelData[2] >> backShiftIndex) & (u32)0xff);
-                                        FillPixelBitFlag(index - skipBackIndex, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
+                                        FillPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
                                     }
                                 }
 #endif
@@ -2756,16 +2760,18 @@ FillInGrid_Thread(void *in)
                     AlphaBlendGrid_8Wide(pixelData);
                     u32 skipBackIndex = 0;
                     u32 backFillCount = 0;
-                    while (backFillCount < backCount)
+                    while (backFillCount < backCount && skipBackIndex <= range_x)
                     {
-                        if (!CheckPixelBitFlag(index - (++skipBackIndex), pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                        ++skipBackIndex;
+                        u32 colIdx = index - skipBackIndex;
+                        if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                         {
-                            u32 idx = lineariseImageIndex(index - skipBackIndex, pixel);
+                            u32 idx = lineariseImageIndex(colIdx, pixel);
                             u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 0] = (u08)((pixelData[0] >> backShiftIndex) & (u64)0xff);
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 1] = (u08)((pixelData[1] >> backShiftIndex) & (u64)0xff);
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 2] = (u08)((pixelData[2] >> backShiftIndex) & (u64)0xff);
-                            FillPixelBitFlag(index - skipBackIndex, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
+                            FillPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
                         }
                     }
 #else
@@ -2773,16 +2779,18 @@ FillInGrid_Thread(void *in)
                     AlphaBlendGrid_4Wide(pixelData);
                     u32 skipBackIndex = 0;
                     u32 backFillCount = 0;
-                    while (backFillCount < backCount)
+                    while (backFillCount < backCount && skipBackIndex <= range_x)
                     {
-                        if (!CheckPixelBitFlag(index - (++skipBackIndex), pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                        ++skipBackIndex;
+                        u32 colIdx = index - skipBackIndex;
+                        if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                         {
-                            u32 idx = lineariseImageIndex(index - skipBackIndex, pixel);
+                            u32 idx = lineariseImageIndex(colIdx, pixel);
                             u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 0] = (u08)((pixelData[0] >> backShiftIndex) & (u32)0xff);
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 1] = (u08)((pixelData[1] >> backShiftIndex) & (u32)0xff);
                             GetCurrentOutputBuffer(Output_Buffer)[idx + 2] = (u08)((pixelData[2] >> backShiftIndex) & (u32)0xff);
-                            FillPixelBitFlag(index - skipBackIndex, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
+                            FillPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags);
                         }
                     }
 #endif
