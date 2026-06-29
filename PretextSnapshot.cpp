@@ -2708,7 +2708,7 @@ FillInGrid_Thread(void *in)
                                 {
                                     ++skipBackIndex;
                                     u32 colIdx = index - skipBackIndex;
-                                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                                    if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                                     {
                                         u32 idx = lineariseImageIndex(colIdx, pixel);
                                         u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
@@ -2726,7 +2726,7 @@ FillInGrid_Thread(void *in)
                                 {
                                     ++skipBackIndex;
                                     u32 colIdx = index - skipBackIndex;
-                                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                                    if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                                     {
                                         u32 idx = lineariseImageIndex(colIdx, pixel);
                                         u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
@@ -2764,7 +2764,7 @@ FillInGrid_Thread(void *in)
                     {
                         ++skipBackIndex;
                         u32 colIdx = index - skipBackIndex;
-                        if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                        if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                         {
                             u32 idx = lineariseImageIndex(colIdx, pixel);
                             u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
@@ -2783,7 +2783,7 @@ FillInGrid_Thread(void *in)
                     {
                         ++skipBackIndex;
                         u32 colIdx = index - skipBackIndex;
-                        if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                        if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                         {
                             u32 idx = lineariseImageIndex(colIdx, pixel);
                             u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
@@ -2847,7 +2847,7 @@ FillInGridCustomOrder(u32 resolution_x, u32 resolution_y)
                         {
                             ++skipBackIndex;
                             u32 colIdx = index - skipBackIndex;
-                            if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                            if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                             {
                                 u32 idx = lineariseImageIndex(colIdx, pixel);
                                 u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
@@ -2864,7 +2864,7 @@ FillInGridCustomOrder(u32 resolution_x, u32 resolution_y)
                         {
                             ++skipBackIndex;
                             u32 colIdx = index - skipBackIndex;
-                            if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                            if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                             {
                                 u32 idx = lineariseImageIndex(colIdx, pixel);
                                 u32 backShiftIndex = (dataSize - backFillCount++ - 1) << 3;
@@ -2901,7 +2901,7 @@ FillInGridCustomOrder(u32 resolution_x, u32 resolution_y)
                 {
                     ++skipBackIndex;
                     u32 colIdx = index - skipBackIndex;
-                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                    if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                     {
                         u32 idx = lineariseImageIndex(colIdx, pixel);
                         u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
@@ -2919,7 +2919,7 @@ FillInGridCustomOrder(u32 resolution_x, u32 resolution_y)
                 {
                     ++skipBackIndex;
                     u32 colIdx = index - skipBackIndex;
-                    if (colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
+                    if (index >= skipBackIndex && colIdx >= start_x && !CheckPixelBitFlag(colIdx, pixel, resolution_x, Output_Buffer->outputImageBufferGridFillFlags))
                     {
                         u32 idx = lineariseImageIndex(colIdx, pixel);
                         u32 backShiftIndex = (backCount - backFillCount++ - 1) << 3;
